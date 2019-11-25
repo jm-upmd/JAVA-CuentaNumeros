@@ -18,6 +18,7 @@ public class CajonSastre {
 	static final boolean DETALLE = true;
 
 	// static int[] array = {3,4, 2,2,3,1,7,4,9,0,0,3};
+	
 	static int[] array = new int[LONG_ARRAY_NUMS];
 	static ArrayList<Integer> numeros = new ArrayList<>();
 	static ArrayList<Integer> repeticiones = new ArrayList<>();

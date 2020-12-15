@@ -1,30 +1,51 @@
 package cuentaNumeros;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Formatter;
 import java.util.Hashtable;
+import java.util.Iterator;
 import java.util.TreeMap;
+import java.util.Vector;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class CajonSastre {
 
 	// Rango de num aleatorios
-	static final int RANGO_DESDE = 0;
-	static final int RANGO_HASTA = 1_000;
+	static final int RANGO_DESDE =1;
+	static final int RANGO_HASTA = 20;
 	
 	// Cantidad de números generados
-	static final int LONG_ARRAY_NUMS = 1_000_000;
+	static final int LONG_ARRAY_NUMS = 5_000_000;
 	
 	// Imprime/no imprme cuenta de caracteres.
-	static final boolean DETALLE = true;
+	static final boolean DETALLE = false;
 
-	// static int[] array = {3,4, 2,2,3,1,7,4,9,0,0,3};
+	static int[] array = new int[LONG_ARRAY_NUMS]; // Array con los núemros aleatorios
 	
-	static int[] array = new int[LONG_ARRAY_NUMS];
-	static ArrayList<Integer> numeros = new ArrayList<>();
-	static ArrayList<Integer> repeticiones = new ArrayList<>();
+	// ArrayList 
+	static ArrayList<Integer> numsArrayList = new ArrayList<>();
+	static ArrayList<Integer> repArrayList = new ArrayList<>();
+	
+	// Vector. Misma funcionalidad pero sincronizado. Se puede usar en programación concurrente. 
+	// Mas lento que ArrayList
+	static Vector<Integer> numsVector = new Vector<>();
+	static Vector<Integer> repVector = new Vector<>();
+	
+	// Array 
+	static int[] repArray = new int[RANGO_HASTA - RANGO_DESDE + 1];
 
+	// Hastable
 	static Hashtable<Integer, Integer> hashtable = new Hashtable<>();
+	
+	//TreeMap
 	static TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+	
+	// Cabeceras de columnas para salida por consola
+	// Cadena formato columnas
+	static final String FORMATO_CAB = "%6s%15s\n";
+	static final String FORMATO_FIL = "%,6d%,15d\n";
+	static final String CABECERA = new Formatter().format(FORMATO_CAB, "Número","Repeticiones").toString();
 
 	public static void main(String[] args) {
 
@@ -32,11 +53,21 @@ public class CajonSastre {
 		for (int i = 0; i < array.length; i++) {
 			array[i] = ThreadLocalRandom.current().nextInt(RANGO_DESDE, RANGO_HASTA + 1);
 		}
-
+		
 		long t = System.currentTimeMillis();
+		cuentaArray();
+		t = System.currentTimeMillis() - t;
+		imprimeColeccion(repArray, t, !DETALLE);
+
+		t = System.currentTimeMillis();
 		cuentaArrayList();
 		t = System.currentTimeMillis() - t;
-		imprimeColeccion(numeros, t, !DETALLE);
+		imprimeColeccion(repArrayList, t, !DETALLE);
+		
+		t = System.currentTimeMillis();
+		cuentaVector();
+		t = System.currentTimeMillis() - t;
+		imprimeColeccion(repVector, t, !DETALLE);
 
 		t = System.currentTimeMillis();
 		cuentaHastable();
@@ -49,20 +80,40 @@ public class CajonSastre {
 		imprimeColeccion(treeMap, t, !DETALLE);
 
 	}
+	
+	static void cuentaArray() {
+		for (int n: array) {
+			repArray[n-RANGO_DESDE]++;
+		}
+		
+	}
 
 	static void cuentaArrayList() {
 		int pos;
 		for (int n : array) {
-			if ((pos = numeros.indexOf(n)) != -1) { // Número ya tiene contador
+			if ((pos = numsArrayList.indexOf(n)) != -1) { // Número ya tiene contador
 				// int posRep = numeros.get(pos);
-				repeticiones.set(pos, repeticiones.get(pos) + 1); // Incrementa contador
+				repArrayList.set(pos, repArrayList.get(pos) + 1); // Incrementa contador
 			} else {
-				numeros.add(n);
-				repeticiones.add(1);
+				numsArrayList.add(n);
+				repArrayList.add(1);
 			}
 		}
 	}
 
+	static void cuentaVector() {
+		int pos;
+		for (int n : array) {
+			if ((pos = numsVector.indexOf(n)) != -1) { // Número ya tiene contador
+				// int posRep = numeros.get(pos);
+				repVector.set(pos, repVector.get(pos) + 1); // Incrementa contador
+			} else {
+				numsVector.add(n);
+				repVector.add(1);
+			}
+		}
+	}
+	
 	static void cuentaTreeMap() {
 		for (int n : array) {
 			if (treeMap.containsKey(n))
@@ -86,31 +137,54 @@ public class CajonSastre {
 	static void imprimeColeccion(Object o, long t, boolean detalle) {
 		if (o instanceof ArrayList) {
 			int i = 0;
-			System.out.println("Clase:" + numeros.getClass().getName());
+			System.out.println("Clase:" + numsArrayList.getClass().getName());
 			System.out.println("Tiempo (mls): " + t);
 			if (detalle)
-				for (int k : numeros) {
-					System.out.println(k + " --> " + repeticiones.get(i++));
+				System.out.print(CABECERA);
+				for (int k : numsArrayList) {
+					System.out.printf(FORMATO_FIL,k ,repArrayList.get(i++));
 				}
 			System.out.println();
-		} else if (o instanceof Hashtable) {
+		} else if (o instanceof Vector) {
+			int i = 0;
+			System.out.println("Clase:" + numsVector.getClass().getName());
+			System.out.println("Tiempo (mls): " + t);
+			System.out.print(CABECERA);
+			if (detalle)
+				for (int k : numsVector) {
+					System.out.printf(FORMATO_FIL,k, repVector.get(i++));
+				}
+			System.out.println();
+		}else if (o instanceof Hashtable) {
 			System.out.println("Clase:" + hashtable.getClass().getName());
 			System.out.println("Tiempo (mls): " + t);
 			if (detalle)
+				System.out.print(CABECERA);
 				for (int k : hashtable.keySet())
-					System.out.println(k + " --> " + hashtable.get(k));
+					System.out.printf(FORMATO_FIL,k, hashtable.get(k));
 			System.out.println();
 
 		} else if (o instanceof TreeMap) {
 			System.out.println("Clase:" + treeMap.getClass().getName());
 			System.out.println("Tiempo (mls): " + t);
 			if (detalle)
+				System.out.print(CABECERA);
 				for (int k : treeMap.keySet())
-					System.out.println(k + " --> " + treeMap.get(k));
+					System.out.printf(FORMATO_FIL,k,treeMap.get(k));
 			System.out.println();
 
-		}
+		} else  if (o instanceof int[]){
+			System.out.println("Array:" );
+			System.out.println("Tiempo (mls): " + t);
+			if (detalle)
+				System.out.print(CABECERA);
+				for (int i=0; i< repArray.length;i++)
+					System.out.printf(FORMATO_FIL, i + RANGO_DESDE ,repArray[i]);
+			System.out.println();
+			
+		} 
 
 	}
 
 }
+

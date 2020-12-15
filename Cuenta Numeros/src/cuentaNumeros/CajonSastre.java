@@ -45,7 +45,7 @@ public class CajonSastre {
 	// Cadena formato columnas
 	static final String FORMATO_CAB = "%6s%15s\n";
 	static final String FORMATO_FIL = "%,6d%,15d\n";
-	static final String CABECERA = new Formatter().format(FORMATO_CAB, "Número","Repeticiones").toString();
+	
 
 	public static void main(String[] args) {
 
@@ -140,7 +140,7 @@ public class CajonSastre {
 			System.out.println("Clase:" + numsArrayList.getClass().getName());
 			System.out.println("Tiempo (mls): " + t);
 			if (detalle)
-				System.out.print(CABECERA);
+				System.out.printf(FORMATO_CAB,"Número","Repeticiones");
 				for (int k : numsArrayList) {
 					System.out.printf(FORMATO_FIL,k ,repArrayList.get(i++));
 				}
@@ -149,7 +149,7 @@ public class CajonSastre {
 			int i = 0;
 			System.out.println("Clase:" + numsVector.getClass().getName());
 			System.out.println("Tiempo (mls): " + t);
-			System.out.print(CABECERA);
+			System.out.printf(FORMATO_CAB,"Número","Repeticiones");
 			if (detalle)
 				for (int k : numsVector) {
 					System.out.printf(FORMATO_FIL,k, repVector.get(i++));
@@ -159,7 +159,7 @@ public class CajonSastre {
 			System.out.println("Clase:" + hashtable.getClass().getName());
 			System.out.println("Tiempo (mls): " + t);
 			if (detalle)
-				System.out.print(CABECERA);
+				System.out.printf(FORMATO_CAB,"Número","Repeticiones");
 				for (int k : hashtable.keySet())
 					System.out.printf(FORMATO_FIL,k, hashtable.get(k));
 			System.out.println();
@@ -168,7 +168,7 @@ public class CajonSastre {
 			System.out.println("Clase:" + treeMap.getClass().getName());
 			System.out.println("Tiempo (mls): " + t);
 			if (detalle)
-				System.out.print(CABECERA);
+				System.out.printf(FORMATO_CAB,"Número","Repeticiones");
 				for (int k : treeMap.keySet())
 					System.out.printf(FORMATO_FIL,k,treeMap.get(k));
 			System.out.println();
@@ -177,7 +177,7 @@ public class CajonSastre {
 			System.out.println("Array:" );
 			System.out.println("Tiempo (mls): " + t);
 			if (detalle)
-				System.out.print(CABECERA);
+				System.out.printf(FORMATO_CAB,"Número","Repeticiones");
 				for (int i=0; i< repArray.length;i++)
 					System.out.printf(FORMATO_FIL, i + RANGO_DESDE ,repArray[i]);
 			System.out.println();
@@ -187,4 +187,5 @@ public class CajonSastre {
 	}
 
 }
+
 

@@ -41,10 +41,9 @@ public class CajonSastre {
 	//TreeMap
 	static TreeMap<Integer, Integer> treeMap = new TreeMap<>();
 	
-	// Cabeceras de columnas para salida por consola
-	// Cadena formato columnas
-	static final String FORMATO_CAB = "%6s%15s\n";
-	static final String FORMATO_FIL = "%,6d%,15d\n";
+	// Cadenas formato para la salida por consola con printf
+	static final String FORMATO_CAB = "%6s%15s\n";   // cabecera
+	static final String FORMATO_FIL = "%,6d%,15d\n"; //filas. La coma es para que ponga signo de millares y decimales.
 	
 
 	public static void main(String[] args) {
@@ -92,7 +91,6 @@ public class CajonSastre {
 		int pos;
 		for (int n : array) {
 			if ((pos = numsArrayList.indexOf(n)) != -1) { // Número ya tiene contador
-				// int posRep = numeros.get(pos);
 				repArrayList.set(pos, repArrayList.get(pos) + 1); // Incrementa contador
 			} else {
 				numsArrayList.add(n);
@@ -105,7 +103,6 @@ public class CajonSastre {
 		int pos;
 		for (int n : array) {
 			if ((pos = numsVector.indexOf(n)) != -1) { // Número ya tiene contador
-				// int posRep = numeros.get(pos);
 				repVector.set(pos, repVector.get(pos) + 1); // Incrementa contador
 			} else {
 				numsVector.add(n);

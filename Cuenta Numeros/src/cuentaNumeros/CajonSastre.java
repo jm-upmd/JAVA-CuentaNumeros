@@ -41,9 +41,10 @@ public class CajonSastre {
 	//TreeMap
 	static TreeMap<Integer, Integer> treeMap = new TreeMap<>();
 	
-	// Cadenas formato para la salida por consola con printf
-	static final String FORMATO_CAB = "%6s%15s\n";   // cabecera
-	static final String FORMATO_FIL = "%,6d%,15d\n"; //filas. La coma es para que ponga signo de millares y decimales.
+	// Cabeceras de columnas para salida por consola
+	// Cadena formato columnas
+	static final String FORMATO_CAB = "%6s%15s\n";
+	static final String FORMATO_FIL = "%,6d%,15d\n";
 	
 
 	public static void main(String[] args) {
@@ -77,6 +78,12 @@ public class CajonSastre {
 		cuentaTreeMap();
 		t = System.currentTimeMillis() - t;
 		imprimeColeccion(treeMap, t, !DETALLE);
+		
+		treeMap.clear();  // borra todos los elementos del treemap
+		t = System.currentTimeMillis();
+		cuentaTreeMapV2();
+		t = System.currentTimeMillis() - t;
+		imprimeColeccion(treeMap, t, !DETALLE);
 
 	}
 	
@@ -91,6 +98,7 @@ public class CajonSastre {
 		int pos;
 		for (int n : array) {
 			if ((pos = numsArrayList.indexOf(n)) != -1) { // Número ya tiene contador
+				// int posRep = numeros.get(pos);
 				repArrayList.set(pos, repArrayList.get(pos) + 1); // Incrementa contador
 			} else {
 				numsArrayList.add(n);
@@ -103,22 +111,39 @@ public class CajonSastre {
 		int pos;
 		for (int n : array) {
 			if ((pos = numsVector.indexOf(n)) != -1) { // Número ya tiene contador
+				// int posRep = numeros.get(pos);
 				repVector.set(pos, repVector.get(pos) + 1); // Incrementa contador
 			} else {
 				numsVector.add(n);
 				repVector.add(1);
 			}
+			
 		}
 	}
 	
 	static void cuentaTreeMap() {
+		Integer valor;
 		for (int n : array) {
+			
+			if ( (valor = treeMap.get(n)) != null)
+				treeMap.put(n, valor + 1);
+			else
+				treeMap.put(n, 1);
+		}
+	}
+	
+	// Otra forma de hacerlo con TreeMap (esta es menos eficiente)
+	static void cuentaTreeMapV2() {
+		for (int n : array) {
+			
 			if (treeMap.containsKey(n))
 				treeMap.put(n, treeMap.get(n) + 1);
 			else
 				treeMap.put(n, 1);
 		}
 	}
+	
+
 
 	static void cuentaHastable() {
 
@@ -184,5 +209,6 @@ public class CajonSastre {
 	}
 
 }
+
 
 

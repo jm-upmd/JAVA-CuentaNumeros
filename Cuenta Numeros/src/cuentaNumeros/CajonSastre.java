@@ -98,7 +98,6 @@ public class CajonSastre {
 		int pos;
 		for (int n : array) {
 			if ((pos = numsArrayList.indexOf(n)) != -1) { // Número ya tiene contador
-				// int posRep = numeros.get(pos);
 				repArrayList.set(pos, repArrayList.get(pos) + 1); // Incrementa contador
 			} else {
 				numsArrayList.add(n);
@@ -111,7 +110,6 @@ public class CajonSastre {
 		int pos;
 		for (int n : array) {
 			if ((pos = numsVector.indexOf(n)) != -1) { // Número ya tiene contador
-				// int posRep = numeros.get(pos);
 				repVector.set(pos, repVector.get(pos) + 1); // Incrementa contador
 			} else {
 				numsVector.add(n);

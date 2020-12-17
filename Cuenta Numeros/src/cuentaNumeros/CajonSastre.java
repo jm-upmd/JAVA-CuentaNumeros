@@ -49,7 +49,7 @@ public class CajonSastre {
 
 	public static void main(String[] args) {
 
-		// Rellena array con numeros aleatorios entre 0 y 100
+		// Rellena array con numeros aleatorios
 		for (int i = 0; i < array.length; i++) {
 			array[i] = ThreadLocalRandom.current().nextInt(RANGO_DESDE, RANGO_HASTA + 1);
 		}
